@@ -24,9 +24,9 @@ public class AdminController {
     @PostMapping("/addUser")
     public ResponseEntity<String> addUser(@RequestBody Map<String, List<String>> userAccess, HttpServletRequest request) {
         String role = (String) request.getAttribute("role");
-        if (!"admin".equals(role)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.Only admins can add user access.");
-        }
+//        if (!"admin".equals(role)) {
+//            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied.Only admins can add user access.");
+//        }
         String userId = String.valueOf(userAccess.get("userId").get(0));//.toString();
         List<String> resources = userAccess.get("endpoint");
         userAccessMap.put(userId, new HashSet<>(resources));

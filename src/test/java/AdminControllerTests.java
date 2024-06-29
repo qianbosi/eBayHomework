@@ -28,9 +28,20 @@ public class AdminControllerTests {
         // Set up the request and expected response
         mockMvc.perform(post("/admin/addUser").contentType(MediaType.APPLICATION_JSON)
                 .header("X-Role-Info", "Basic " + Base64.getEncoder().encodeToString("123456:Jim:admin".getBytes()))
-                .content("{\"userId\":[\"345678\"],\"endpoint\":[\"resource A\",\"resource B\",\"resource C\"]}")
+                .content("{\"userId\":[\"234567\"],\"endpoint\":[\"resourceA\",\"resourceB\",\"resourceC\"]}")
         )
                 .andExpect(status().isOk())
                 .andExpect(content().string("User access added successfully."));
+    }
+
+    @Test
+    public void testAddUserAsUser() throws Exception {
+        // Set up the request and expected response
+        mockMvc.perform(post("/admin/addUser").contentType(MediaType.APPLICATION_JSON)
+                        .header("X-Role-Info", "Basic " + Base64.getEncoder().encodeToString("234567:Sam:user".getBytes()))
+                        .content("{\"userId\":[\"345678\"],\"endpoint\":[\"resourceD\",\"resourceE\",\"resourceF\"]}")
+                )
+                .andExpect(status().isForbidden())
+                .andExpect(content().string("Access denied. Only admins can add user access."));
     }
 }
